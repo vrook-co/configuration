@@ -30,7 +30,7 @@ junk = junk[:junk.rindex('}')+1]
 data = json.loads(junk)
 
 # Order these so that the most likely useful messages are last.
-GOOD_KEYS = ['cmd', 'module_stdout', 'module_stderr', 'warnings', 'stderr', 'msg', 'censored', 'stdout']
+GOOD_KEYS = ['cmd', 'module_stdout', 'module_stderr', 'warnings', 'msg', 'censored', 'stderr', 'stdout']
 IGNORE_KEYS = ['stdout_lines', 'stderr_lines', 'start', 'end', 'delta', 'changed', 'failed', 'rc', 'item']
 
 unknown_keys = set(data) - set(GOOD_KEYS) - set(IGNORE_KEYS)
