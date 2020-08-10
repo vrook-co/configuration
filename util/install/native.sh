@@ -95,26 +95,30 @@ trap finish EXIT
 echo "Installing release '$OPENEDX_RELEASE'"
 
 ##
+## All the update are done on the server by running the ansible script install_prerequisites.yml
+##
+
+##
 ## Set ppa repository source for gcc/g++ 4.8 in order to install insights properly
 ##
-sudo apt-get install -y python-software-properties
-sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+## sudo apt-get install -y python-software-properties
+## sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
 ##
 ## Update and Upgrade apt packages
 ##
-sudo apt-get update -y
-sudo apt-get upgrade -y
+## sudo apt-get update -y
+## sudo apt-get upgrade -y
 
 ##
 ## Install system pre-requisites
 ##
-sudo apt-get install -y build-essential software-properties-common curl git-core libxml2-dev libxslt1-dev python-pip libmysqlclient-dev python-apt python-dev libxmlsec1-dev libfreetype6-dev swig gcc g++
+## sudo apt-get install -y build-essential software-properties-common curl git-core libxml2-dev libxslt1-dev python-pip libmysqlclient-dev python-apt python-dev libxmlsec1-dev libfreetype6-dev swig gcc g++
 # ansible-bootstrap installs yaml that pip 19 can't uninstall.
-sudo apt-get remove -y python-yaml
-sudo pip install --upgrade pip==20.0.2
-sudo pip install --upgrade setuptools==44.1.0
-sudo -H pip install --upgrade virtualenv==16.7.10
+## sudo apt-get remove -y python-yaml
+## sudo pip install --upgrade pip==20.0.2
+## sudo pip install --upgrade setuptools==44.1.0
+## sudo -H pip install --upgrade virtualenv==16.7.10
 
 ##
 ## Overridable version variables in the playbooks. Each can be overridden
@@ -151,6 +155,11 @@ if [[ -f my-passwords.yml ]]; then
     EXTRA_VARS="-e@$(pwd)/my-passwords.yml $EXTRA_VARS"
 fi
 
+# extra-vars.yml is the file for extra variables
+if [[ -f extra-vars.yml ]]; then
+    EXTRA_VARS="-e@$(pwd)/extra-vars.yml $EXTRA_VARS"
+fi
+
 EXTRA_VARS="-e@$(pwd)/config.yml $EXTRA_VARS"
 
 CONFIGURATION_VERSION=${CONFIGURATION_VERSION-$OPENEDX_RELEASE}
@@ -158,9 +167,9 @@ CONFIGURATION_VERSION=${CONFIGURATION_VERSION-$OPENEDX_RELEASE}
 ##
 ## Clone the configuration repository and run Ansible
 ##
-## cd ~
-## git clone https://github.com/vrook-co/configuration
-cd ~/configuration
+cd ~/repos/
+git clone https://github.com/vrook-co/configuration
+cd ~/repos/configuration
 git checkout $CONFIGURATION_VERSION
 git pull
 
@@ -173,12 +182,12 @@ sudo -H pip install -r requirements.txt
 ##
 ## install prerequisties on server
 ##
-cd ~/configuration/playbooks && sudo -E ansible-playbook -vvv --user=ubuntu --private-key=$path_to_private_key ./install_prerequisites.yml -i "$ip_address,"
+cd ~/repos/configuration/playbooks && sudo -E ansible-playbook -vvv --user=ubuntu --private-key=$path_to_private_key ./install_prerequisites.yml -i "$ip_address,"
 
 ##
 ## Run the openedx_native.yml playbook in the configuration/playbooks directory
 ##
-cd ~/configuration/playbooks && sudo -E ansible-playbook -vvv --user=ubuntu --private-key=$path_to_private_key ./openedx_native.yml -i "$ip_address," $EXTRA_VARS "$@"
+cd ~/repos/configuration/playbooks && sudo -E ansible-playbook -vvv --user=ubuntu --private-key=$path_to_private_key ./openedx_native.yml -i "$ip_address," $EXTRA_VARS "$@"
 ansible_status=$?
 
 if [[ $ansible_status -ne 0 ]]; then
