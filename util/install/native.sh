@@ -9,6 +9,16 @@
 ##
 
 ##
+## getting the ip address of the server and its key
+##
+
+cd ~
+source server-vars.txt
+echo "Installting edx-platform on the server with the ip address: $ip_address"
+echo "The path to the private key of the server is at: $path_to_private_key"
+
+
+##
 ## Sanity checks
 ##
 
@@ -148,22 +158,27 @@ CONFIGURATION_VERSION=${CONFIGURATION_VERSION-$OPENEDX_RELEASE}
 ##
 ## Clone the configuration repository and run Ansible
 ##
-cd /var/tmp
-git clone https://github.com/edx/configuration
-cd configuration
+## cd ~
+## git clone https://github.com/vrook-co/configuration
+cd ~/configuration
 git checkout $CONFIGURATION_VERSION
 git pull
 
 ##
 ## Install the ansible requirements
 ##
-cd /var/tmp/configuration
+cd ~/configuration
 sudo -H pip install -r requirements.txt
+
+##
+## install prerequisties on server
+##
+cd ~/configuration/playbooks && sudo -E ansible-playbook -vvv --user=ubuntu --private-key=$path_to_private_key ./install_prerequisites.yml -i "$ip_address,"
 
 ##
 ## Run the openedx_native.yml playbook in the configuration/playbooks directory
 ##
-cd /var/tmp/configuration/playbooks && sudo -E ansible-playbook -c local ./openedx_native.yml -i "localhost," $EXTRA_VARS "$@"
+cd ~/configuration/playbooks && sudo -E ansible-playbook -vvv --user=ubuntu --private-key=$path_to_private_key ./openedx_native.yml -i "$ip_address," $EXTRA_VARS "$@"
 ansible_status=$?
 
 if [[ $ansible_status -ne 0 ]]; then
