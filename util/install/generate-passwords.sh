@@ -3,6 +3,8 @@
 # Read a list of Ansible variables that should have generated values, and make
 # a new file just like it, with the generated values.
 
+cd ~/repos/vrx-installation/edx-platform
+
 TARGET=${CONFIGURATION_VERSION-${OPENEDX_RELEASE-master}}
 wget -q "https://raw.githubusercontent.com/edx/configuration/$TARGET/playbooks/sample_vars/passwords.yml" -O passwords-template.yml
 

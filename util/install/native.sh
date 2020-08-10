@@ -12,7 +12,7 @@
 ## getting the ip address of the server and its key
 ##
 
-cd ~
+cd ~/repos/vrx-installation/edx-platform
 source server-vars.txt
 echo "Installting edx-platform on the server with the ip address: $ip_address"
 echo "The path to the private key of the server is at: $path_to_private_key"
