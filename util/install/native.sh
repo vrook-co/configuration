@@ -176,7 +176,7 @@ git pull
 ##
 ## Install the ansible requirements
 ##
-cd ~/configuration
+cd ~/repos/configuration
 sudo -H pip install -r requirements.txt
 
 ##
@@ -198,7 +198,7 @@ if [[ $ansible_status -ne 0 ]]; then
     echo " "
     echo "Decoded error:"
     # Find the FAILED line before the "to retry," line, and decode it.
-    awk '/to +retry,/{if (bad) print bad} /FAILED/{bad=$0}' $log_file | python3 /var/tmp/configuration/util/ansible_msg.py
+    awk '/to +retry,/{if (bad) print bad} /FAILED/{bad=$0}' $log_file | python3 ~/repos/configuration/util/ansible_msg.py
     echo " "
     echo "============================================================"
     echo "Installation failed!"
