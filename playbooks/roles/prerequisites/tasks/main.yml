@@ -3,7 +3,7 @@
 - name: Install python software properties
   shell: "sudo apt-get install -y python-software-properties"
 
-- name: Install ppa: ubuntu toolchain
+- name: Install ppa ubuntu toolchain
   shell: "sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test"
 
 - name: apt update
