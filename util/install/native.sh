@@ -12,10 +12,10 @@
 ## getting the ip address of the server and its key
 ##
 
-cd ~/repos/vrx-installation/edx-platform
-source server-vars.txt
-echo "Installting edx-platform on the server with the ip address: $ip_address"
-echo "The path to the private key of the server is at: $path_to_private_key"
+#cd ~/repos/vrx-installation/edx-platform
+#source server-vars.txt
+#echo "Installting edx-platform on the server with the ip address: $ip_address"
+#echo "The path to the private key of the server is at: $path_to_private_key"
 
 
 ##
@@ -179,6 +179,10 @@ git pull
 cd ~/repos/configuration
 sudo -H pip install -r requirements.txt
 
+##
+## Source File names
+##
+cd ~/repos/vrx-installation/edx-platform                                                                                source server-vars.txt                                                                                                  echo "Installting edx-platform on the server with the ip address: $ip_address"                                          echo "The path to the private key of the server is at: $path_to_private_key" 
 ##
 ## install prerequisties on server
 ##
