@@ -4,5 +4,5 @@
   vars:
     ENABLE_INSTALL_PREREQUISITES: true
   roles:
-    - prerequisites
+    - role: prerequisites
       when: ENABLE_INSTALL_PREREQUISITES 
